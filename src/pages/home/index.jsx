@@ -4,7 +4,7 @@ import Trash from '../../../assets/trash.png';
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://backendtest-production-c816.up.railway.app/User', // Adicionando 'https://'
+  baseURL: 'https://backendtest-production-c816.up.railway.app', // Adicionando 'https://'
 });
 
 
@@ -16,7 +16,7 @@ function Home() {
 
   async function getUsers() {
     try {
-      const usersFromApi = await api.get('/usuarios');
+      const usersFromApi = await api.get('/User');
       if (Array.isArray(usersFromApi.data)) {
         setUsers(usersFromApi.data);
       } else {
@@ -31,7 +31,7 @@ function Home() {
 
 
   async function createTasks() {
-    await api.post('/usuarios', {
+    await api.post('/User', {
       titulo: inputTitle.current.value,
       descricao: inputDescription.current.value,
       status: inputStatus.current.value,
@@ -40,7 +40,7 @@ function Home() {
   }
 
   async function deleteUsers(id) {
-    await api.delete(`/usuarios/${id}`);
+    await api.delete(`/User/${id}`);
     getUsers();
   }
 
