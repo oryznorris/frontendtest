@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // URL da API do backend, vinda da variável de ambiente
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = import.meta.env.VITE_API_URL;
 
 // Criação de uma instância do Axios com a URL base
 const api = axios.create({

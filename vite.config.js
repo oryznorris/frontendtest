@@ -5,9 +5,7 @@ export default defineConfig({
   plugins: [react()],
   base: '/', // Garante que os assets sejam carregados corretamente
   server: {
-    host: '0.0.0.0', // Permite conexões externas
-    port: 4173,      // Use a porta que você está usando
+    host: process.env.VITE_HOST || '0.0.0.0', // Host dinâmico
+    port: parseInt(process.env.VITE_PORT) || 4173, // Porta dinâmica
   },
 });
-
-
