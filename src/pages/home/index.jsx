@@ -4,7 +4,7 @@ import Trash from '../../../assets/trash.png';
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://backendtest.railway.internal:3000', // Adicionando 'https://'
+  baseURL: 'https://backendtest-production-c816.up.railway.app/User', // Adicionando 'https://'
 });
 
 
