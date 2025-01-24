@@ -11,10 +11,15 @@ const api = axios.create({
 // Exemplo de requisição
 api.get('/usuarios')
   .then(response => {
-    console.log(response.data);
+    const data = response.data;
+    if (Array.isArray(data)) {
+      console.log("Dados recebidos:", data);
+    } else {
+      console.error("A resposta não é um array:", data);
+    }
   })
   .catch(error => {
-    console.error(error);
+    console.error("Erro na requisição:", error);
   });
 
 export default api;

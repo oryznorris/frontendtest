@@ -4,8 +4,9 @@ import Trash from '../../../assets/trash.png';
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'avaliacao-production.up.railway.app', // URL do backend no Railway
+  baseURL: 'https://avaliacao-production.up.railway.app', // Adicionando 'https://'
 });
+
 
 function Home() {
   const [users, setUsers] = useState([]);
@@ -14,9 +15,20 @@ function Home() {
   const inputStatus = useRef();
 
   async function getUsers() {
-    const usersFromApi = await api.get('/usuarios');
-    setUsers(usersFromApi.data);
+    try {
+      const usersFromApi = await api.get('/usuarios');
+      if (Array.isArray(usersFromApi.data)) {
+        setUsers(usersFromApi.data);
+      } else {
+        console.error('Erro: O retorno da API não é um array', usersFromApi.data);
+        setUsers([]); // Define um array vazio se os dados forem inválidos
+      }
+    } catch (error) {
+      console.error('Erro ao buscar usuários:', error);
+      setUsers([]); // Garante que o estado seja sempre um array
+    }
   }
+
 
   async function createTasks() {
     await api.post('/usuarios', {
@@ -49,19 +61,26 @@ function Home() {
         <button type='button' onClick={async () => createTasks()}>Cadastrar Tarefas</button>
       </form>
 
-      {users.map((user) => (
-        <div key={user.id} className='card'>
-          <div>
-            <p>Titulo: <span>{user.titulo}</span></p>
-            <p>Descrição: <span>{user.descricao}</span></p>
-            <p>Status: <span>{user.status}</span></p>
+      {users.length > 0 ? (
+        users.map((user) => (
+          <div key={user.id} className='card'>
+            <div>
+              <p>Titulo: <span>{user.titulo}</span></p>
+              <p>Descrição: <span>{user.descricao}</span></p>
+              <p>Status: <span>{user.status}</span></p>
+            </div>
+            <button onClick={() => deleteUsers(user.id)}>
+              <img src={Trash} alt="lixo" />
+            </button>
           </div>
-          <button onClick={() => deleteUsers(user.id)}>
-            <img src={Trash} alt="lixo" />
-          </button>
-        </div>
-      ))}
+        ))
+      ) : (
+        <p>Nenhum usuário encontrado.</p>
+      )}
+
     </div>
+
+
   );
 }
 
